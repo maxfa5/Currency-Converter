@@ -29,7 +29,7 @@
                     <Label Text="Сумма:"
                                FontSize="14"
                            Margin="10"/>
-                    <Entry Text="{Binding Amount, Mode=TwoWay}"
+                    <Entry Text="{Binding Amount}"
                                Keyboard="Numeric"
                                FontSize="18"
                            MaxLength="15"
@@ -45,7 +45,7 @@
                                FontSize="14"/>
                     <Picker ItemsSource="{Binding Currencies}"
                                 ItemDisplayBinding="{Binding DisplayName}"
-                                SelectedItem="{Binding SelectedFromCurrency, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedFromCurrency}"
                                 Title="Выберите валюту"
                                 Margin="10"
                                 FontSize="16"/>
@@ -64,9 +64,7 @@
                         Command="{Binding ClearCacheCommand}" />
             
                 <Button Text="Поменять местами"
-                        
-                            Command="{Binding SwapCurrenciesCommand}"
-                            
+                            Command="{Binding SwapCurrenciesCommand}"                            
                             BorderWidth="2"
                             BackgroundColor="Transparent"
                             TextColor="green"/>
@@ -77,7 +75,7 @@
                            Margin="10"/>
                     <Picker ItemsSource="{Binding Currencies}"
                                 ItemDisplayBinding="{Binding DisplayName}"
-                                SelectedItem="{Binding SelectedToCurrency, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedToCurrency}"
                                 Title="Выберите валюту"
                                 FontSize="16"
                             Margin="10"/>
@@ -92,7 +90,7 @@
                         <Label Text="Результат"
                                    FontSize="14"
                                    TextColor="#666"/>
-                        <Label Text="{Binding ConvertedAmount, StringFormat='{0:F2}'}"
+                        <Label Text="{Binding ConvertedAmount, StringFormat='{0:F6}'}"
                                    FontSize="32"
                                    FontAttributes="Bold"
                                    TextColor="green"/>

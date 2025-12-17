@@ -15,9 +15,9 @@ namespace Converter
 {
     public interface ICurrencyService
     {
-        Task<CbrApiResponse> GetExchangeRatesAsync(DateTime date);
+        Task<CbApiResponse> GetExchangeRatesAsync(DateTime date);
         Task<List<Currency>> GetAvailableCurrenciesAsync(DateTime date);
-        List<Currency> GetCurrenciesFromResponse(CbrApiResponse response);
+        List<Currency> GetCurrenciesFromResponse(CbApiResponse response);
         decimal ConvertWithRates(decimal amount, Currency fromCurrency, Currency toCurrency);
     }
     public class CurrencyService : ICurrencyService
@@ -50,8 +50,9 @@ namespace Converter
         };
     }
 
-        public async Task<CbrApiResponse> GetExchangeRatesAsync(DateTime date)
+        public async Task<CbApiResponse> GetExchangeRatesAsync(DateTime date)
         {
+#pragma warning disable CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
             return await _cacheService.GetOrCreateAsync(
                 $"exchange_rates_{date:yyyyMMdd}",
                 async () =>
@@ -76,7 +77,7 @@ namespace Converter
                         if (string.IsNullOrWhiteSpace(response))
                             throw new Exception("Получен пустой ответ от сервера");
 
-                        return JsonSerializer.Deserialize<CbrApiResponse>(response, _jsonOptions);
+                        return JsonSerializer.Deserialize<CbApiResponse>(response, _jsonOptions);
                     }
                     catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
@@ -89,9 +90,10 @@ namespace Converter
                 },
                        TimeSpan.FromHours(1)
             );
+#pragma warning restore CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
         }
 
-        private async Task<CbrApiResponse> GetNearestAvailableDate(DateTime date)
+        private async Task<CbApiResponse> GetNearestAvailableDate(DateTime date)
         {
             for (int i = 1; i <= 14; i++)
             {
@@ -115,7 +117,7 @@ namespace Converter
                 return GetCurrenciesFromResponse(response);
             }
 
-            public List<Currency> GetCurrenciesFromResponse(CbrApiResponse response)
+            public List<Currency> GetCurrenciesFromResponse(CbApiResponse response)
             {
                 if (response?.Valute == null)
                     return new List<Currency>();

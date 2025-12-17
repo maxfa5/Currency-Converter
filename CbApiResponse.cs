@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Converter
 {
-    public class CbrApiResponse
+    public class CbApiResponse
     {
         [JsonPropertyName("Date")]
         public DateTime Date { get; set; }

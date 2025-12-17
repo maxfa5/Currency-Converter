@@ -139,7 +139,7 @@ namespace Converter
             SwapCurrenciesCommand = new Command(SwapCurrencies);
             ClearCacheCommand = new Command(ClearCache);
 
-            _ = LoadCurrenciesAsync();
+            LoadCurrenciesAsync();
         }
 
         private async Task LoadCurrenciesAsync()

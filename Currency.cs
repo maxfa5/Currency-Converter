@@ -31,10 +31,5 @@ namespace Converter
         public decimal Previous { get; set; }
 
         public string DisplayName => $"{CharCode} - {Name}";
-
-        public string DisplayRate => $"{Nominal} {CharCode} = {Value:F4} ₽";
-
-        public decimal RatePerOne => Value / Nominal;
-
     }
 }
