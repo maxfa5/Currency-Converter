@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Converter.MainPage"
              Title="Конвертер валют">
-
-    <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
         <Label
         Text="Конвертер валют"
         Margin="10"
@@ -19,8 +19,8 @@
         <DatePicker x:Name="currencyDatePicker"
             Date="{Binding SelectedDate}"
             Format="yyyy-MM-dd"
-            MaximumDate="{Binding MaxDay}"
-            MinimumDate="{Binding MinDay}"
+            MaximumDate="{Binding MaxDate}"
+            MinimumDate="{Binding MinDate}"
             HorizontalOptions="Start" />
         <VerticalStackLayout Spacing="15">
                
@@ -50,15 +50,27 @@
                                 Margin="10"
                                 FontSize="16"/>
                 </VerticalStackLayout>
-
-                <Button Text=" Обменять"
+                <HorizontalStackLayout
+                    HorizontalOptions="Center">
+                    <Button Text="Обновить" 
+                            BorderWidth="2"
+                            BackgroundColor="Transparent"
+                            TextColor="green"
+                            Command="{Binding LoadDataCommand}" />
+                <Button Text="Очистить кеш" 
+                        BorderWidth="2"
+                        BackgroundColor="Transparent"
+                        TextColor="green"
+                        Command="{Binding ClearCacheCommand}" />
+            
+                <Button Text="Поменять местами"
                         
                             Command="{Binding SwapCurrenciesCommand}"
-                            HorizontalOptions="Center"
-                        Margin="10"
+                            
+                            BorderWidth="2"
                             BackgroundColor="Transparent"
-                            TextColor="#4CAF50"/>
-
+                            TextColor="green"/>
+                </HorizontalStackLayout>
                 <VerticalStackLayout Spacing="5">
                 <Label Text="В валюту:"
                                FontSize="14"
@@ -71,8 +83,8 @@
                             Margin="10"/>
                 </VerticalStackLayout>
 
-                <Border BackgroundColor="#E8F5E9"
-                            Stroke="#4CAF50"
+                <Border BackgroundColor="White"
+                            Stroke="green"
                             StrokeThickness="1"
                             StrokeShape="RoundRectangle 8"
                             Padding="20">
@@ -83,7 +95,7 @@
                         <Label Text="{Binding ConvertedAmount, StringFormat='{0:F2}'}"
                                    FontSize="32"
                                    FontAttributes="Bold"
-                                   TextColor="#4CAF50"/>
+                                   TextColor="green"/>
                         <Label Text="{Binding SelectedToCurrency.CharCode}"
                                    FontSize="16"
                                    TextColor="#666"/>
@@ -93,4 +105,5 @@
 
     
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
