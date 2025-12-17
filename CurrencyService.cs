@@ -52,7 +52,6 @@ namespace Converter
 
         public async Task<CbrApiResponse> GetExchangeRatesAsync(DateTime date)
         {
-            // Используем кеширование через CacheService
             return await _cacheService.GetOrCreateAsync(
                 $"exchange_rates_{date:yyyyMMdd}",
                 async () =>
@@ -88,7 +87,7 @@ namespace Converter
                         throw new Exception($"Ошибка: {ex.Message}");
                     }
                 },
-                date.Date == DateTime.Today ? TimeSpan.FromHours(1) : TimeSpan.FromDays(1)
+                TimeSpan.FromHours(1)
             );
         }
 
@@ -123,7 +122,6 @@ namespace Converter
 
                 var currencies = response.Valute.Values.ToList();
 
-                // Добавляем RUB вручную
                 currencies.Add(new Currency
                 {
                     ID = "R00000",
@@ -143,11 +141,9 @@ namespace Converter
                 if (fromCurrency == null || toCurrency == null)
                     throw new ArgumentNullException("Валюты не могут быть null");
 
-                // Все курсы в API относительно RUB
                 decimal fromRate = fromCurrency.CharCode == "RUB" ? 1 : fromCurrency.Value / fromCurrency.Nominal;
                 decimal toRate = toCurrency.CharCode == "RUB" ? 1 : toCurrency.Value / toCurrency.Nominal;
 
-                // Конвертация: amount в fromCurrency → RUB → toCurrency
                 decimal amountInRub = amount * fromRate;
                 return amountInRub / toRate;
             }

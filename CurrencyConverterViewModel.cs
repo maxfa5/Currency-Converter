@@ -33,14 +33,13 @@ namespace Converter
                     _selectedDate = value.Date;
                     OnPropertyChanged();
 
-                    // Загружаем курсы для новой даты (без сохранения)
                     _ = LoadCurrenciesAsync();
                 }
             }
         }
 
         public DateTime MaxDate => DateTime.Today;
-        public DateTime MinDate => new DateTime(1997, 1, 1);
+        public DateTime MinDate => new DateTime(1991, 1, 1);
 
         public List<Currency> Currencies
         {
@@ -133,16 +132,13 @@ namespace Converter
             _currencyService = currencyService;
             _cacheService = cacheService;
 
-            // Значения по умолчанию (без сохранения)
             _selectedDate = DateTime.Today;
             _amount = 100;
 
-            // Инициализация команд
             LoadDataCommand = new Command(async () => await LoadCurrenciesAsync());
             SwapCurrenciesCommand = new Command(SwapCurrencies);
             ClearCacheCommand = new Command(ClearCache);
 
-            // Загружаем данные при запуске
             _ = LoadCurrenciesAsync();
         }
 
@@ -167,10 +163,8 @@ namespace Converter
                     StatusMessage = $"Курсы на {response.Date:dd.MM.yyyy}";
                 }
 
-                // Получаем список валют
                 Currencies = _currencyService.GetCurrenciesFromResponse(response);
 
-                // Устанавливаем значения по умолчанию при первом запуске
                 if (SelectedFromCurrency == null)
                 {
                     SelectedFromCurrency = Currencies.FirstOrDefault(c => c.CharCode == "USD")
@@ -183,17 +177,12 @@ namespace Converter
                                        ?? Currencies.FirstOrDefault();
                 }
 
-                // Выполняем конвертацию
                 ConvertCurrency();
             }
             catch (Exception ex)
             {
-                StatusMessage = "Ошибка загрузки данных";
+                StatusMessage = $"Ошибка. Не удалось загрузить курсы валют: {ex.Message}";
                 Console.WriteLine($"Ошибка: {ex.Message}");
-
-                // Показываем сообщение пользователю
-                await Application.Current.MainPage.DisplayAlert("Ошибка",
-                    $"Не удалось загрузить курсы валют: {ex.Message}", "OK");
             }
             finally
             {
@@ -208,7 +197,6 @@ namespace Converter
 
             try
             {
-                // Выполняем конвертацию (без кеширования)
                 ConvertedAmount = _currencyService.ConvertWithRates(
                     Amount,
                     SelectedFromCurrency,
